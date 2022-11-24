@@ -1,0 +1,16 @@
+{% extends 'movie_app/base.html' %}
+
+{% block title %}
+Фільми по жанрам
+{% endblock %}
+
+{% block content %}
+<h2> Фільми жанру </h2>
+<h3>{{ genre.name }}</h3>
+<ul>
+    {% for movie in genre.movies.all %}
+    <li><a href="{{ movie.get_url }}">{{ movie }}</a></li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

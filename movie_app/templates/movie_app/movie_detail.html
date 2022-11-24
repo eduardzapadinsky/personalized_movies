@@ -1,0 +1,64 @@
+{% extends 'movie_app/base.html' %}
+
+{% block title %}
+Інформація про фільм "{{ movie.name }}"
+{% endblock %}
+
+{% block content %}
+<h2> {{ movie.name }} </h2>
+<h3> {{ movie.original_name }} </h3>
+<div>
+    {% if movie.picture %}
+    <img src="{{ movie.picture.url }}" alt="Poster - {{ movie.original_name }}" width="200">
+    {% endif %}
+</div>
+<h3> Рейтинг imdb - {{ movie.rating_imdb }} </h3>
+<!--<h3> Мій рейтинг - {{ movie.my_rating }} </h3>-->
+<h3> Дата перегляду - {{ movie.viewed_date }} </h3>
+<h3> Жанри: </h3>
+<ul>
+    {% for genre in movie.genres.all %}
+    <li><a href="{{ genre.get_url }}">{{ genre }}</a></li>
+    {% endfor %}
+</ul>
+<h3> {{ movie.year }} р. </h3>
+<h3> {{ movie.length }} хв. </h3>
+<h4> {{ movie.description | safe }} </h4>
+<h3> Режисер - <a href="{{ movie.director.get_url }}">{{ movie.director.first_name }}
+    {{ movie.director.last_name }}</a></h3>
+<h3> Актори: </h3>
+<ul>
+    {% for actor in movie.actors.all %}
+    <li><a href="{{ actor.get_url }}">{{ actor.first_name }} {{ actor.last_name }}</a></li>
+    {% endfor %}
+</ul>
+{% for rating in movie.rating_set.all %}
+{% if rating.ip == get_client_ip %}
+<h4> Мій рейтинг - {{ rating.rating }} </h4>
+<h4> Дата останнього перегляду - {{ rating.viewed_date }} </h4>
+{% endif %}
+{% endfor %}
+<h4>Змінити рейтинг чи дату:</h4>
+<form action="{% url 'add_rating' movie.id %}" method="post">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+    </div>
+    <button type="submit"> Надіслати</button>
+</form>
+<h4>Додати відгук:</h4>
+<form action="{% url 'add_feedback' movie.id %}" method="post" id="formFeedback">
+    {% csrf_token %}
+    <input type="hidden" name="parent" id="contactparent" value="">
+    <div>
+        {{ form_f.as_p }}
+    </div>
+    <button type="submit"> Надіслати</button>
+</form>
+{% for feedback in movie.feedback_set.all %}
+<div>
+    <li> {{ feedback.name }} {{ feedback.surname }}</li>
+    <h4> {{ feedback.feed }} </h4>
+</div>
+{% endfor %}
+{% endblock %}

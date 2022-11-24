@@ -1,0 +1,17 @@
+{% extends 'movie_app/base.html' %}
+
+{% block title %}
+Інфо. про актора {{ actor.first_name }} {{ actor.last_name }}
+{% endblock %}
+
+{% block content %}
+<h2> {{ actor }} </h2>
+<h3> Стать - {{ actor.gender }} </h3>
+<h3> Адреса проживання: <a href="{{ actor.residence.map_coordinate }}" target="_blank">{{ actor.residence }}</a></h3>
+<h3> Фільми, в яких знімався: </h3>
+<ul>
+    {% for movie in actor.movies.all %}
+    <li><a href="{{ movie.get_url }}">{{ movie }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

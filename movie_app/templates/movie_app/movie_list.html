@@ -1,0 +1,32 @@
+{% extends 'movie_app/base.html' %}
+
+{% block title %}
+Список усіх фільмів
+{% endblock %}
+{% block filterbar %}
+{% include 'movie_app/filter_bar.html' %}
+{% endblock %}
+{% block content %}
+<h2>Всі фільми</h2>
+<ul>
+
+    {% for movie in movie_list %}
+    <h3><a href="{{ movie.get_url }}">{{ movie.name }}</a></h3>
+    <li> {{ movie.original_name }}</li>
+    <li> Рік випуску - {{ movie.year }}</li>
+    <li> Тривалість - {{ movie.length }}</li>
+    <li> Рейтинг imdb - {{ movie.rating_imdb }}</li>
+    {% for rating in movie.rating_set.all %}
+    {% if rating.ip == get_client_ip %}
+    <li> Мій рейтинг - {{ rating.rating }}</li>
+    <li> Дата останнього перегляду - {{ rating.viewed_date }}</li>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
+
+</ul>
+<div>
+    {% include 'movie_app/pagination.html' %}
+</div>
+
+{% endblock %}

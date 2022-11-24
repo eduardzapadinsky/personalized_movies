@@ -1,0 +1,70 @@
+{% block filterbar %}
+<div>
+    <h4>Пошук фільму</h4>
+    <form action="{% url 'search' %}" method="get">
+        <input type="search" placeholder="Введіть назву..." name="q">
+        <button type="submit">Пошук</button>
+    </form>
+</div>
+<form action="{% url 'filter' %}" method="get">
+    <div>
+        <h4>Жанри</h4>
+        <ul>
+            {% for genre in view.get_genres %}
+            <li>
+                <input type="checkbox" name="genre" value="{{ genre.id }}">
+                <span> {{ genre }} </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h4>Роки</h4>
+        <ul>
+            {% for movie in view.get_years %}
+            <li>
+                <input type="checkbox" name="year" value="{{ movie.year }}">
+                <span> {{ movie.year }} </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <h4>Рейтинг imdb (більше-рівно від значення)</h4>
+        <ul>
+            {% for rating_imdb in view.get_rating %}
+            <li>
+                <input type="radio" name="rating_imdb" value="{{ rating_imdb }}">
+                <span> {{ rating_imdb }} </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h4>Мій рейтинг (більше-рівно від значення)</h4>
+        <ul>
+            {% for my_rating in view.get_rating %}
+            <li>
+                <input type="radio" name="my_rating" value="{{ my_rating }}">
+                <span> {{ my_rating }} </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h4>Не дивився більше ніж років: </h4>
+        <ul>
+            {% for my_date in view.get_date %}
+            <li>
+                <input type="radio" name="my_date" value="{{ my_date }}">
+                <span> {{ my_date }} </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <button type="submit">Знайти</button>
+</form>
+{% endblock %}

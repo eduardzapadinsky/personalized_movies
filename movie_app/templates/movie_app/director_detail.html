@@ -1,0 +1,16 @@
+{% extends 'movie_app/base.html' %}
+
+{% block title %}
+Інформація про режисера
+{% endblock %}
+
+{% block content %}
+<h2> {{ director.first_name }} {{ director.last_name }}</h2>
+<h3> Ел. пошта - {{ director.director_email }} </h3>
+<h3> Зняті фільми: </h3>
+<ul>
+    {% for movie in director.movies.all %}
+    <li><a href="{{ movie.get_url }}">{{ movie }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
